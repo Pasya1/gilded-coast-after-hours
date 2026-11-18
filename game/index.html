@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#152d35">
+  <title>Gilded Coast: After Hours</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="viewport" aria-label="Gilded Coast game world"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div id="damage" aria-hidden="true"></div>
+  <div id="hud" hidden>
+    <header class="topbar">
+      <div class="brand"><span class="brand-icon">G<span>C</span></span><div>GILDED COAST<small>AFTER HOURS</small></div></div>
+      <div class="world-time"><span class="sun-icon">☀</span> <b id="clock">18:42</b><span>GOLDEN HOUR</span></div>
+      <div class="wealth"><div id="wanted" aria-label="Wanted level">☆☆☆☆☆</div><div class="money" id="money">$250</div><div id="heat-status">OFF THE RADAR</div></div>
+    </header>
+    <section class="mission-card"><div class="eyebrow"><i></i><span id="chapter">01 / THE HARBOR LEDGER</span></div><h2 id="mission-title">BORROWED TIME</h2><p id="objective"></p><div class="mission-progress"><span id="progress"></span></div><small id="objective-distance"></small></section>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <section class="minimap-panel"><div class="map-top"><b id="district">PALM PROMENADE</b><span>N ↑</span></div><canvas id="minimap" width="260" height="190" aria-label="City minimap"></canvas><div class="map-bottom"><span class="map-pin">◆</span><span id="map-caption">GILDED COAST</span><kbd>M</kbd></div></section>
+    <section class="status-panel"><div class="health-row"><span>+</span><div class="health-track"><i id="health-fill"></i></div><b id="health">100</b></div><div class="ammo-row"><span id="ammo">12 <small>/ 96</small></span><span id="weapon-label">SERVICE PISTOL</span><kbd>R</kbd></div></section>
+    <section id="vehicle-panel" class="vehicle-panel" hidden><div id="car-name">SUNBIRD GT</div><div class="speed"><b id="speed">0</b><span>KM/H</span></div><div class="vehicle-track"><span id="car-health"></span></div><small id="car-state">F · EXIT VEHICLE</small></section>
+    <div id="interaction" class="interaction" hidden><kbd>F</kbd><span></span></div>
+    <div id="control-hints" class="control-hints"><span><kbd>W A S D</kbd> MOVE</span><span><kbd>F</kbd> INTERACT</span><span><kbd>↖</kbd> AIM / FIRE</span><span><kbd>TAB</kbd> RADIO</span><span><kbd>ESC</kbd> PAUSE</span></div>
+    <div id="crosshair" aria-hidden="true"><i></i><b></b></div>
+    <div id="dialogue" class="dialogue" hidden><div class="radio-icon">88.4<span>FM</span></div><div><b id="speaker"></b><p id="speech"></p></div></div>
+    <div id="arrest" class="arrest" hidden>BEING ARRESTED <span><i></i></span> MOVE AWAY</div>
+    <div id="target-label" class="target-label" hidden></div>
+  </div>
+
+  <section id="start" class="start-screen">
+    <div class="start-shade"></div>
+    <div class="start-copy"><div class="eyebrow">AN ORIGINAL OPEN WORLD CRIME STORY</div><h1>GILDED<br><em>COAST</em></h1><div class="afterhours">A F T E R &nbsp; H O U R S</div><p>One coast. One stolen ledger.<br>A city worth taking back.</p><div class="start-tags"><span>EXPLORE</span><span>DRIVE</span><span>OUTRUN</span></div></div>
+    <div class="start-menu"><div class="eyebrow">YOUR NIGHT STARTS HERE</div><button class="mode-card primary" data-action="story"><span class="mode-number">01</span><span><strong>Play the story</strong><small>Three linked jobs. A city that listens.</small></span><b>↗</b></button><button class="mode-card" data-action="roam"><span class="mode-number">02</span><span><strong>Free roam</strong><small>Take a car. Find your own way.</small></span><b>↗</b></button><button class="mode-card" data-action="pursuit"><span class="mode-number">03</span><span><strong>Hot pursuit</strong><small>A fast car. Three stars. Survive.</small></span><b>↗</b></button><button id="continue" class="text-button" data-action="continue" disabled>Continue saved night <span>→</span></button><div class="start-help"><span>KEYBOARD + MOUSE</span><button data-action="help">Controls <kbd>H</kbd></button><button data-action="mute" id="start-audio">Sound on ♪</button></div></div>
+    <footer>GILDED COAST / 18:42 <span>BUILT FOR THE NIGHT. MADE TO BE PLAYED.</span></footer>
+  </section>
+
+  <section id="pause" class="modal-backdrop" hidden><div class="modal pause-menu"><div class="eyebrow">TAKE A BREATHER</div><h2>City on hold.</h2><p>Your night will be right here.</p><button class="solid-button" data-action="resume">Back to the coast</button><div class="menu-grid"><button data-action="save">Save progress <kbd>K</kbd></button><button data-action="radio">Open the radio <kbd>TAB</kbd></button><button data-action="help">Controls <kbd>H</kbd></button><button data-action="mute">Toggle sound <kbd>N</kbd></button><button data-action="retry">Retry checkpoint</button><button data-action="title">Title screen</button></div></div></section>
+  <section id="help" class="modal-backdrop" hidden><div class="modal help-menu"><div class="eyebrow">KNOW YOUR WAY AROUND</div><h2>The coast is yours.</h2><div class="help-grid"><div><h3>On foot</h3><p><kbd>W A S D</kbd> / arrow keys · Move</p><p><kbd>SHIFT</kbd> · Sprint</p><p><kbd>MOUSE</kbd> · Aim</p><p><kbd>LEFT CLICK</kbd> · Fire</p><p><kbd>R</kbd> · Reload</p></div><div><h3>Behind the wheel</h3><p><kbd>W / S</kbd> · Accelerate / brake / reverse</p><p><kbd>A / D</kbd> · Steer</p><p><kbd>SPACE</kbd> · Handbrake</p><p><kbd>F</kbd> · Enter / exit a nearby car</p><p><kbd>C</kbd> / mouse wheel · Camera distance</p></div><div><h3>Your night</h3><p><kbd>F</kbd> · Talk / collect / restock</p><p><kbd>TAB</kbd> · Story radio</p><p><kbd>M</kbd> · City map</p><p><kbd>K</kbd> · Save · <kbd>N</kbd> · Mute</p><p><kbd>ESC</kbd> · Pause / close</p></div></div><p class="help-tip">Gold markers lead to your objective. Blue + signs refill health and ammunition. Police search your last known position: break their line of sight, leave the red area, and wait for the stars to clear. At low vehicle health, find another car.</p><button class="solid-button" data-action="close-help">Got it. Let’s go.</button></div></section>
+  <section id="radio" class="modal-backdrop" hidden><div class="modal radio-menu"><div class="eyebrow">88.4 FM / YOUR STORY RADIO</div><h2>A city that listens.</h2><p>Choose your next job. Completed jobs can be replayed.</p><div id="job-list"></div><button class="text-button" data-action="close-radio">Back to the streets <span>→</span></button></div></section>
+  <section id="map-modal" class="modal-backdrop" hidden><div class="modal city-map"><div class="map-heading"><div><div class="eyebrow">KNOW THE STREETS</div><h2>Gilded Coast.</h2></div><button data-action="close-map">Close <kbd>M</kbd></button></div><canvas id="fullmap" width="760" height="540" aria-label="Full city map"></canvas><div class="map-legend"><span>▲ YOU</span><span>◆ OBJECTIVE</span><span>● PATROL</span><span>+ SUPPLIES</span></div></div></section>
+  <section id="failure" class="modal-backdrop" hidden><div class="modal failure-menu"><div class="eyebrow" id="failure-tag">THE NIGHT GOT AWAY</div><h2 id="failure-title">Busted.</h2><p id="failure-copy">Every good escape takes a second try.</p><button class="solid-button" data-action="retry">Retry checkpoint</button><button class="text-button" data-action="story">Start a new story <span>→</span></button></div></section>
+  <section id="ending" class="modal-backdrop" hidden><div class="modal ending-menu"><div class="eyebrow">GILDED COAST / STORY COMPLETE</div><h2>Some things are worth<br><em>stealing back.</em></h2><p>The ledger is public. The waterfront deal is frozen. Mara’s neighborhood gets another sunrise.</p><div class="ending-reward" id="ending-reward">+$3,000</div><p class="credit">YOU / MARA VALE / IVO SERRANO<br>AFTER HOURS RADIO · 88.4 FM</p><button class="solid-button" data-action="close-ending">The night is still young</button></div></section>
+  <div id="loading"><b>GILDED COAST</b><span>Bringing the coast to life…</span></div>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>

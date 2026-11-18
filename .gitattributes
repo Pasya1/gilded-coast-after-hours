@@ -1,0 +1,4 @@
+* text eol=lf
+vendor/makefun-game.ts -text
+game/vendor/* -text
+screenshots/* -text
