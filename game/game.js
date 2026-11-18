@@ -86,14 +86,14 @@ function restore(data, retry = false) {
   for (const dataCar of data.cars) { const car = population.cars.find(c => c.id === dataCar.id); if (car) Object.assign(car, dataCar, { speed: 0, occupied: false, health: retry && dataCar.id === data.carId ? 100 : dataCar.health }); }
   if (data.carId !== null) { currentCar = carById(data.carId); if (currentCar) { currentCar.occupied = true; currentCar.traffic = false; state.player.x = currentCar.x; state.player.z = currentCar.z; } }
   if (state.story.job === 1 && !['interlude', 'ending'].includes(state.story.stage)) spawnGuards(data.guards);
-  failed = false; title = false; paused = false; closePanels(); hud.show('start', false); hud.show('hud'); cameraTarget.set(state.player.x, 0, state.player.z);
+  failed = false; title = false; paused = false; hud.clearTransientMessages(); closePanels(); hud.show('start', false); hud.show('hud'); cameraTarget.set(state.player.x, 0, state.player.z);
   if (state.wanted) addPolice(); rememberCheckpoint(); return true;
 }
 
 function startMode(mode) {
   resetCars(); clearCops(); clearGuards(); currentCar = null; state = freshState(mode);
   nextShot = 0;
-  title = false; failed = false; paused = false; closePanels(); hud.show('start', false); hud.show('hud'); audio.unlock();
+  title = false; failed = false; paused = false; hud.clearTransientMessages(); closePanels(); hud.show('start', false); hud.show('hud'); audio.unlock();
   if (mode === 'pursuit') {
     const car = population.getaway; car.x = 90; car.z = 43; car.angle = 0; currentCar = car; car.occupied = true; car.traffic = false; car.stolen = true;
     state.player.x = car.x; state.player.z = car.z; raiseWanted(3); addPolice(); addPolice();

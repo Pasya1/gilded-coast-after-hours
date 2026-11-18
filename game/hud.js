@@ -10,6 +10,11 @@ export class CoastHUD {
     this.toastTimer = 0; this.dialogueTimer = 0;
   }
   show(id, show = true) { this.el[id].hidden = !show; }
+  clearTransientMessages() {
+    this.toastTimer = 0; this.dialogueTimer = 0;
+    this.el.toast.textContent = ''; this.el.toast.style.opacity = 0;
+    this.show('dialogue', false);
+  }
   toast(text, seconds = 3) { this.el.toast.textContent = text; this.el.toast.style.opacity = 1; this.toastTimer = seconds; }
   say(speaker, words, seconds = 9) { this.el.speaker.textContent = speaker; this.el.speech.textContent = words; this.show('dialogue'); this.dialogueTimer = seconds; }
   update(state, view, car, dt) {

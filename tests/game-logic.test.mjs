@@ -6,6 +6,7 @@ import { newStory, advanceStory, startJob, missionView, places, objectiveInReach
 import { CityNavigation } from '../game/navigation.js';
 import { validSave, readSavedNight, savedVehicle } from '../game/persistence.js';
 import { createCoastalCity } from '../game/world.js';
+import { CoastHUD } from '../game/hud.js';
 
 test('driving accelerates, brakes into reverse, and handbrake dissipates speed', () => {
   const car = { speed: 0, angle: 0, maxSpeed: 43, acceleration: 18 };
@@ -85,4 +86,14 @@ test('a traffic car that turned retains its route direction through a real save 
   assert.ok(loaded); assert.equal(loaded.cars[0].axis, 'x'); assert.equal(loaded.cars[0].dir, -1);
   assert.equal(loaded.cars[0].lastIntersection, 'z90'); assert.equal(loaded.cars[0].angle, -Math.PI / 2);
   assert.equal(loaded.cars[0].mesh, undefined);
+});
+
+test('retry clears old messages while allowing the new mode introduction to display', () => {
+  const hud = Object.create(CoastHUD.prototype);
+  hud.el = { toast: { textContent: 'VEHICLE DISABLED', style: { opacity: 1 } }, dialogue: { hidden: false }, speaker: { textContent: 'OLD RADIO' }, speech: { textContent: 'An old message' } };
+  hud.toastTimer = 4; hud.dialogueTimer = 7; hud.clearTransientMessages();
+  assert.equal(hud.el.toast.textContent, ''); assert.equal(hud.el.toast.style.opacity, 0); assert.equal(hud.el.dialogue.hidden, true);
+  assert.equal(hud.toastTimer, 0); assert.equal(hud.dialogueTimer, 0);
+  hud.say('COAST RUNNER', 'The new pursuit starts now.', 8);
+  assert.equal(hud.el.dialogue.hidden, false); assert.equal(hud.el.speaker.textContent, 'COAST RUNNER'); assert.equal(hud.el.speech.textContent, 'The new pursuit starts now.');
 });
