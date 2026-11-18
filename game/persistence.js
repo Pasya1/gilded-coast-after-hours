@@ -2,6 +2,16 @@ const stages = new Set(['meet', 'car', 'cache', 'escape', 'deliver', 'relay', 't
 export const SAVE_KEY = 'gilded-coast-after-hours-v1';
 const inRange = (value, low, high) => Number.isFinite(value) && value >= low && value <= high;
 
+export function savedVehicle(car) {
+  return {
+    id: car.id, x: car.x, z: car.z, angle: car.angle,
+    health: Math.max(0, Math.min(100, car.health)),
+    stolen: !!car.stolen, traffic: !!car.traffic,
+    axis: car.axis === 'x' ? 'x' : 'z', dir: car.dir === -1 ? -1 : 1,
+    lastIntersection: car.lastIntersection || '',
+  };
+}
+
 export function validSave(data) {
   if (!data || data.version !== 1 || !['story', 'roam', 'pursuit'].includes(data.state?.mode)) return false;
   const { player, story, challenge } = data.state;

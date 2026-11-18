@@ -4,7 +4,7 @@ import * as THREE from '../game/vendor/three.min.js';
 import { updateDrive, moveWithCollisions, circleOverlapsBox, segmentBlocked, distance } from '../game/math.js';
 import { newStory, advanceStory, startJob, missionView, places, objectiveInReach } from '../game/story.js';
 import { CityNavigation } from '../game/navigation.js';
-import { validSave, readSavedNight } from '../game/persistence.js';
+import { validSave, readSavedNight, savedVehicle } from '../game/persistence.js';
 import { createCoastalCity } from '../game/world.js';
 
 test('driving accelerates, brakes into reverse, and handbrake dissipates speed', () => {
@@ -75,4 +75,14 @@ test('saved nights preserve progress and reject corrupt or out-of-world data', (
   assert.equal(readSavedNight({ getItem() { throw new Error('Storage unavailable'); } }), null);
   const bad = saveFixture(); bad.state.player.x = Infinity; assert.equal(validSave(bad), false);
   bad.state.player.x = 0; bad.state.story.stage = 'nonexistent'; assert.equal(validSave(bad), false);
+});
+
+test('a traffic car that turned retains its route direction through a real save round-trip', () => {
+  const car = { id: 0, x: -31, z: 93, angle: -Math.PI / 2, health: 87, stolen: false, traffic: true, axis: 'x', dir: -1, lastIntersection: 'z90' };
+  car.mesh = { owner: car }; // Scene objects are circular and must stay out of the save.
+  const data = saveFixture(); data.cars = [savedVehicle(car)];
+  const loaded = readSavedNight({ getItem: () => JSON.stringify(data) });
+  assert.ok(loaded); assert.equal(loaded.cars[0].axis, 'x'); assert.equal(loaded.cars[0].dir, -1);
+  assert.equal(loaded.cars[0].lastIntersection, 'z90'); assert.equal(loaded.cars[0].angle, -Math.PI / 2);
+  assert.equal(loaded.cars[0].mesh, undefined);
 });

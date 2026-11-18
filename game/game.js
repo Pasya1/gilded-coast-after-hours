@@ -6,7 +6,7 @@ import { CoastHUD, districtAt } from './hud.js';
 import { CityNavigation } from './navigation.js';
 import { clamp, lerp, distance, nearest, roadsX, roadsZ, angleDelta, moveWithCollisions, segmentBlocked, circleOverlapsBox, updateDrive } from './math.js';
 import { places, newStory, missionView, advanceStory, startJob, storyJobs, objectiveInReach, dialogue } from './story.js';
-import { SAVE_KEY, validSave, readSavedNight } from './persistence.js';
+import { SAVE_KEY, validSave, readSavedNight, savedVehicle } from './persistence.js';
 
 const scene = new THREE.Scene(); scene.background = new THREE.Color('#e1bca5'); scene.fog = new THREE.Fog('#dfbdab', 135, 460);
 const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, 0.1, 1000);
@@ -65,7 +65,7 @@ function resetCars() {
 resetCars();
 
 function serialize() {
-  return { version: 1, state: structuredClone(state), carId: currentCar?.id ?? null, cars: population.cars.map(c => ({ id: c.id, x: c.x, z: c.z, angle: c.angle, health: clamp(c.health, 0, 100), stolen: c.stolen, traffic: c.traffic })), guards: guards.map(g => g.health) };
+  return { version: 1, state: structuredClone(state), carId: currentCar?.id ?? null, cars: population.cars.map(savedVehicle), guards: guards.map(g => g.health) };
 }
 function readSave() { try { return readSavedNight(localStorage); } catch { return null; } }
 function saveGame(notify = true) {
